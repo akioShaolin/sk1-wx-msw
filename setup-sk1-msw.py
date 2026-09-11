@@ -34,6 +34,7 @@ import os
 import platform
 import shutil
 import sys
+from bootstrap_build import install_launcher
 from zipfile import ZIP_DEFLATED
 
 sys.path.insert(0, '../sk1-wx')
@@ -229,6 +230,7 @@ if PORTABLE_PACKAGE:
     portable = os.path.join(get_res_path(), 'portable.zip')
     print 'Extracting', portable
     ZipFile(portable, 'r').extractall(portable_name)
+    install_launcher(get_res_path(), portable_name, portable=True)
     portable_libs = os.path.join(portable_name, 'libs')
     for item in PKGS:
         src = os.path.join(libdir, item)
@@ -278,6 +280,7 @@ if MSI_PACKAGE:
     print 'Extracting', exe_file
     ZipFile(exe_file, 'r').extractall(msi_dir_name)
 
+    install_launcher(get_res_path(), msi_dir_name, portable=False)
     msi_libs = os.path.join(msi_dir_name, 'libs')
     for item in PKGS:
         src = os.path.join(libdir, item)
