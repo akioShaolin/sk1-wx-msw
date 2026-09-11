@@ -1,10 +1,15 @@
 import sys
+import os
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                             "..", "..")))
+from bootstrap_build import bootstrap_command
 
 SCRIPT = "src\\sk1.py"
 
 if len(sys.argv) == 1:
     sys.argv += ['py2exe', ]
-elif len(sys.argv) == 2:
+elif sys.argv[1] == 'portable':
     sys.argv[1] = 'py2exe'
     SCRIPT = "src\\sk1_portable.py"
 
@@ -20,6 +25,7 @@ data_files = [("Microsoft.VC90.CRT", glob(r'C:\Program Files\Microsoft Visual St
 INCLUDES = ['os', 'sys']
 
 setup(
+    cmdclass={"py2exe": bootstrap_command()},
     options={'py2exe': {'bundle_files': 3,
         'compressed': True,
         'includes': INCLUDES,
